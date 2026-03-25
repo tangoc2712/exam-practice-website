@@ -3,7 +3,7 @@ import type { Exam } from '../../types';
 import { GlassCard, GlassPanel } from '../ui/GlassCard';
 import { Button } from '../ui/Button';
 import classNames from 'classnames';
-import { Lightbulb, Flag, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Lightbulb, Flag, ChevronRight, ChevronLeft, CheckCircle2, Eye, ArrowLeft, Check, X, AlertTriangle } from 'lucide-react';
 
 interface ScreenExamProps {
   exam: Exam;
@@ -16,9 +16,11 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   const [markedQuestions, setMarkedQuestions] = useState<Set<string>>(new Set());
   const [showHint, setShowHint] = useState(false);
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const question = exam.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === exam.questions.length - 1;
+  const isFirstQuestion = currentQuestionIndex === 0;
 
   const currentAnswers = userAnswers[question.id] || [];
 
@@ -51,10 +53,17 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
 
   const handleNext = () => {
     if (isLastQuestion) {
-      setShowConfirmSubmit(true);
+      setShowPreview(true);
     } else {
       setCurrentQuestionIndex(prev => prev + 1);
-      setShowHint(false); // Reset hint for next question
+      setShowHint(false);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (!isFirstQuestion) {
+      setCurrentQuestionIndex(prev => prev - 1);
+      setShowHint(false);
     }
   };
 
@@ -62,6 +71,16 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
     onSubmit(userAnswers);
   };
 
+  const handleGoToQuestion = (index: number) => {
+    setCurrentQuestionIndex(index);
+    setShowPreview(false);
+    setShowHint(false);
+  };
+
+  const answeredCount = exam.questions.filter(q => (userAnswers[q.id] || []).length > 0).length;
+  const flaggedCount = exam.questions.filter(q => markedQuestions.has(q.id)).length;
+
+  // Confirm Submit Dialog
   if (showConfirmSubmit) {
     return (
       <div className="animate-fade-in w-full max-w-lg mx-auto p-4">
@@ -94,6 +113,116 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
     );
   }
 
+  // Preview Page
+  if (showPreview) {
+    return (
+      <div className="animate-fade-in w-full max-w-4xl mx-auto p-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-neon-cyan/30">
+          <div>
+            <h1 className="text-xl font-display font-bold text-white tracking-widest">{exam.title}</h1>
+            <span className="text-sm text-neon-pink font-medium uppercase tracking-wider">
+              Exam Preview
+            </span>
+          </div>
+          <div className="flex gap-3 text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 bg-neon-cyan/10 border border-neon-cyan text-neon-cyan rounded-sm">
+              {answeredCount}/{exam.questions.length} Answered
+            </span>
+            {flaggedCount > 0 && (
+              <span className="px-3 py-1 bg-red-500/10 border border-red-500 text-red-400 rounded-sm">
+                {flaggedCount} Flagged
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Summary Table */}
+        <GlassCard className="mb-8 p-0 md:p-0 overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[#333344] bg-[#161625]/50">
+                <th className="text-left px-6 py-4 text-xs font-display uppercase tracking-wider text-neon-cyan">#</th>
+                <th className="text-left px-6 py-4 text-xs font-display uppercase tracking-wider text-neon-cyan">Question</th>
+                <th className="text-center px-6 py-4 text-xs font-display uppercase tracking-wider text-neon-cyan">Answered</th>
+                <th className="text-center px-6 py-4 text-xs font-display uppercase tracking-wider text-neon-cyan">Flagged for Review</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exam.questions.map((q, index) => {
+                const isAnswered = (userAnswers[q.id] || []).length > 0;
+                const isFlagged = markedQuestions.has(q.id);
+                return (
+                  <tr
+                    key={q.id}
+                    onClick={() => handleGoToQuestion(index)}
+                    className="border-b border-[#333344]/50 cursor-pointer transition-all duration-200 hover:bg-neon-cyan/5 hover:shadow-[inset_0_0_20px_rgba(0,255,255,0.05)] group"
+                    data-testid={`preview-row-${index}`}
+                  >
+                    <td className="px-6 py-4 text-sm text-slate-400 group-hover:text-neon-cyan transition-colors">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-300 group-hover:text-white transition-colors max-w-md">
+                      <span className="line-clamp-2">{q.text}</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {isAnswered ? (
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-green-500/20 text-green-400 shadow-[0_0_8px_rgba(74,222,128,0.3)]">
+                          <Check size={16} />
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-700/50 text-slate-500">
+                          <X size={16} />
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {isFlagged ? (
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-red-500/20 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]">
+                          <Flag size={16} />
+                        </span>
+                      ) : (
+                        <span className="text-slate-600">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </GlassCard>
+
+        {/* Unanswered warning */}
+        {answeredCount < exam.questions.length && (
+          <div className="mb-6 p-4 rounded-sm bg-amber-500/10 border border-amber-500/50 text-amber-200 text-sm flex items-start gap-3">
+            <AlertTriangle size={18} className="mt-0.5 text-amber-400 flex-shrink-0" />
+            <p>You have {exam.questions.length - answeredCount} unanswered question(s). You can click any row to go back and answer.</p>
+          </div>
+        )}
+
+        {/* Footer Controls */}
+        <div className="flex justify-between items-center">
+          <Button
+            variant="ghost"
+            onClick={() => setShowPreview(false)}
+          >
+            <ArrowLeft className="mr-2 w-4 h-4" />
+            Back to Questions
+          </Button>
+          <Button
+            variant="success"
+            size="lg"
+            onClick={() => setShowConfirmSubmit(true)}
+            className="min-w-[160px]"
+          >
+            Submit Exam
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Normal Question View
   return (
     <div className="animate-fade-in w-full max-w-4xl mx-auto p-4 py-8">
       {/* Header Info */}
@@ -175,16 +304,36 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
 
       {/* Footer Controls */}
       <div className="flex justify-between items-center">
-        {/* Simple pagination dots could go here, omitting for minimalism */}
-        <div /> 
+        <div>
+          {!isFirstQuestion && (
+            <Button 
+              variant="ghost"
+              size="lg"
+              onClick={handlePrevious}
+              className="min-w-[160px]"
+            >
+              <ChevronLeft className="mr-2 w-5 h-5" />
+              Previous Question
+            </Button>
+          )}
+        </div>
         <Button 
           variant={isLastQuestion ? "success" : "primary"}
           size="lg"
           onClick={handleNext}
           className="min-w-[160px]"
         >
-          {isLastQuestion ? 'Submit Exam' : 'Next Question'}
-          {!isLastQuestion && <ChevronRight className="ml-2 w-5 h-5" />}
+          {isLastQuestion ? (
+            <>
+              Review & Submit
+              <Eye className="ml-2 w-5 h-5" />
+            </>
+          ) : (
+            <>
+              Next Question
+              <ChevronRight className="ml-2 w-5 h-5" />
+            </>
+          )}
         </Button>
       </div>
     </div>

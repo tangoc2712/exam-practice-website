@@ -4,19 +4,15 @@ test.describe('Exam Practice Integration Tests', () => {
   test.beforeEach(async ({ page }) => {
     // TC_001: Load exam list smoothly
     await page.goto('http://localhost:5173'); // Attempt default port
-    // If not responsive, tests will fail or we can configure base url. Let's assume vite is on 5173 or 5174.
-    // The playwright config can set this, but we'll try 5174 since it's the one I used manually.
     await page.goto('http://localhost:5174').catch(() => page.goto('http://localhost:5173'));
   });
 
   test('TC_017, TC_018, TC_019 - Add Custom Exam via Modal', async ({ page }) => {
     // TC_017: Open Add Exam Modal
     await page.getByText('Add Your Own Exam').first().click();
-    // Use nth(1) because both the card and the modal header have this text
     await expect(page.getByText('Add Your Own Exam', { exact: true }).nth(1)).toBeVisible();
 
     // TC_019: Close Add Exam Modal
-    // The close button is absolute positioned top right inside the modal.
     const closeBtn = page.locator('button').filter({ has: page.locator('svg.lucide-x') }).first();
     await closeBtn.click();
     await expect(page.getByText('Add Your Own Exam', { exact: true }).nth(1)).toBeHidden();
@@ -50,13 +46,12 @@ test.describe('Exam Practice Integration Tests', () => {
     await expect(page.getByText('Playwright Custom Exam')).toBeVisible();
   });
 
-  test('Exam Workflow (TC_002 to TC_016)', async ({ page }) => {
+  test('Exam Workflow (TC_002 to TC_016, TC_020 to TC_023)', async ({ page }) => {
     // TC_002: Start an exam session
     await page.getByText('Google Professional Data Engineer').first().click();
     await expect(page.getByText(/Question \d+ of \d+/)).toBeVisible();
 
     // TC_003: Answer single choice question
-    // Options are identified by the option text or as children of the card
     const optionLabels = page.locator('span.text-lg');
     await optionLabels.nth(0).click();
     await optionLabels.nth(1).click();
@@ -64,7 +59,6 @@ test.describe('Exam Practice Integration Tests', () => {
     // TC_006: Toggle Question Hint
     const hintButton = page.locator('button[title="Toggle Hint"]');
     await hintButton.click();
-    // Hint content should appear. It has specific colors
     await expect(page.locator('div.bg-neon-cyan\\/10 p').last()).toBeVisible(); 
     await hintButton.click(); // hide
 
@@ -76,18 +70,44 @@ test.describe('Exam Practice Integration Tests', () => {
     await page.getByRole('button', { name: 'Next Question' }).click();
     await expect(page.getByText(/Question \d+ of \d+/)).toBeVisible();
 
-    // Fast forward to end of exam (TC_009)
-    // Assume questions are answered with the first option
+    // TC_020: Navigate to previous question
+    await page.getByRole('button', { name: 'Previous Question' }).click();
+    await expect(page.getByText(/Question 1 of \d+/)).toBeVisible();
+
+    // Fast forward to end of exam
+    // Answer first question and navigate forward
+    await page.locator('span.text-lg').nth(0).click();
     while (await page.getByRole('button', { name: 'Next Question' }).isVisible()) {
-      // Must re-evaluate optionLabels inside loop because they change per question
       await page.locator('span.text-lg').nth(0).click();
       await page.getByRole('button', { name: 'Next Question' }).click();
     }
 
-    // Last question, answering it before submitting
+    // Last question - answer it
     await page.locator('span.text-lg').nth(0).click();
 
-    // TC_009: Trigger submit confirmation
+    // TC_021: Preview page displays question summary table
+    await page.getByRole('button', { name: 'Review & Submit' }).click();
+    await expect(page.getByText('Exam Preview')).toBeVisible();
+    // Verify header columns exist
+    await expect(page.getByText('Answered').first()).toBeVisible();
+    await expect(page.getByText('Flagged for Review').first()).toBeVisible();
+    // Verify table rows exist
+    const previewRows = page.locator('[data-testid^="preview-row-"]');
+    await expect(previewRows.first()).toBeVisible();
+
+    // TC_022: Navigate from preview to a specific question
+    await previewRows.first().click();
+    await expect(page.getByText(/Question 1 of \d+/)).toBeVisible();
+
+    // Navigate back to last question and go to preview again
+    while (await page.getByRole('button', { name: 'Next Question' }).isVisible()) {
+      await page.getByRole('button', { name: 'Next Question' }).click();
+    }
+    await page.getByRole('button', { name: 'Review & Submit' }).click();
+    await expect(page.getByText('Exam Preview')).toBeVisible();
+
+    // TC_023: Submit exam from preview page
+    // TC_009: Trigger submit confirmation (now from preview page)
     await page.getByRole('button', { name: 'Submit Exam' }).click();
     await expect(page.getByText('Submit Exam?')).toBeVisible();
 
@@ -109,10 +129,11 @@ test.describe('Exam Practice Integration Tests', () => {
     await page.getByRole('button', { name: 'Retake Exam' }).click();
     await expect(page.getByText(/Question \d+ of \d+/)).toBeVisible();
 
-    // Skip to end again
+    // Skip to end again via next + review & submit
     while (await page.getByRole('button', { name: 'Next Question' }).isVisible()) {
       await page.getByRole('button', { name: 'Next Question' }).click();
     }
+    await page.getByRole('button', { name: 'Review & Submit' }).click();
     await page.getByRole('button', { name: 'Submit Exam' }).click();
     await page.getByRole('button', { name: 'Submit', exact: true }).click();
 
