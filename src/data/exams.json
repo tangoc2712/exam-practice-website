@@ -1,0 +1,174 @@
+[
+{
+  "id": "gcp-pde-batch-1",
+  "title": "Google Professional Data Engineer - Batch 1",
+  "description": "Lô dữ liệu đầu tiên (Câu 1-10) phân loại theo Domain.",
+  "questions": [
+    {
+      "id": "Q1",
+      "domain": "Section 4: Preparing and using data for analysis",
+      "text": "Your company built a TensorFlow neural-network model with a large number of neurons and layers. The model fits well for the training data. However, when tested against new data, it performs poorly. What method can you employ to address this?",
+      "type": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Threading",
+          "isCorrect": false,
+          "explanation": "Threading liên quan đến xử lý song song, không giải quyết vấn đề của model."
+        },
+        {
+          "id": "B",
+          "text": "Serialization",
+          "isCorrect": false,
+          "explanation": "Serialization dùng để lưu trữ trạng thái object, không liên quan đến độ chính xác."
+        },
+        {
+          "id": "C",
+          "text": "Dropout Methods",
+          "isCorrect": true,
+          "explanation": "Dropout là kỹ thuật Regularization giúp loại bỏ ngẫu nhiên các neuron khi train, ngăn chặn hiện tượng Overfitting (học vẹt)."
+        },
+        {
+          "id": "D",
+          "text": "Dimensionality Reduction",
+          "isCorrect": false,
+          "explanation": "Giảm chiều dữ liệu thường làm trước khi đưa vào model, nhưng Dropout là cách trực tiếp nhất cho Neural Networks."
+        }
+      ],
+      "hint": "Model học tốt trên training data nhưng kém trên test data là biểu hiện của Overfitting."
+    },
+    {
+      "id": "Q2",
+      "domain": "Section 4: Preparing and using data for analysis",
+      "text": "You are building a model to make clothing recommendations. You know a user's fashion preference is likely to change over time, so you build a data pipeline to stream new data back to the model as it becomes available. How should you use this data to train the model?",
+      "type": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Continuously retrain the model on just the new data.",
+          "isCorrect": false,
+          "explanation": "Chỉ train dữ liệu mới sẽ khiến model quên các pattern cũ (Catastrophic Forgetting)."
+        },
+        {
+          "id": "B",
+          "text": "Continuously retrain the model on a combination of existing data and the new data.",
+          "isCorrect": true,
+          "explanation": "Kết hợp dữ liệu cũ và mới giúp model cập nhật xu hướng mà vẫn giữ được kiến thức nền tảng."
+        },
+        {
+          "id": "C",
+          "text": "Train on the existing data while using the new data as your test set.",
+          "isCorrect": false,
+          "explanation": "Dữ liệu mới cần để train cập nhật xu hướng, không phải chỉ để test."
+        },
+        {
+          "id": "D",
+          "text": "Train on the new data while using the existing data as your test set.",
+          "isCorrect": false,
+          "explanation": "Test set phải là dữ liệu mới nhất chưa từng thấy để đánh giá thực tế."
+        }
+      ],
+      "hint": "Cần một phương pháp giúp model học cái mới nhưng không quên cái cũ."
+    },
+    {
+      "id": "Q349",
+      "domain": "Section 2: Ingesting and processing the data",
+      "text": "You are using Dataflow to build a streaming data pipeline to analyze user website click activity from Pub/Sub. You need to calculate the number of clicks for each user site visit. A site visit is defined as a period of activity followed by 30 minutes of inactivity for a specific user. What should you do?",
+      "type": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use tumbling windows with a 30-minute window.",
+          "isCorrect": false,
+          "explanation": "Tumbling window có kích thước cố định, không nhận diện được khoảng thời gian inactivity."
+        },
+        {
+          "id": "B",
+          "text": "Use hopping windows with a 30-minute window, and a 1-minute period.",
+          "isCorrect": false,
+          "explanation": "Hopping window dùng cho phân tích trượt có chồng lấp, không dành cho session người dùng."
+        },
+        {
+          "id": "C",
+          "text": "Use hopping windows with a 30-minute window, and a 30-minute period.",
+          "isCorrect": false,
+          "explanation": "Đây thực chất là tumbling window, không đáp ứng yêu cầu."
+        },
+        {
+          "id": "D",
+          "text": "Use session windows with a 30-minute gap duration.",
+          "isCorrect": true,
+          "explanation": "Session windows tự động gom nhóm dữ liệu theo từng user và đóng window khi xuất hiện một khoảng 'gap' (inactivity) như yêu cầu."
+        }
+      ],
+      "hint": "Khi có yếu tố 'activity followed by inactivity' (hoạt động theo sau bởi sự không hoạt động), luôn nghĩ đến Session."
+    },
+    {
+      "id": "Q4",
+      "domain": "Section 3: Storing the data",
+      "text": "You are designing a relational database for a global application. You need strong consistency, horizontal scalability, and the ability to process global transactions. Which Google Cloud service should you choose?",
+      "type": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Cloud SQL",
+          "isCorrect": false,
+          "explanation": "Cloud SQL là RDBMS tốt nhưng không hỗ trợ horizontal scalability một cách tự động ra quy mô toàn cầu."
+        },
+        {
+          "id": "B",
+          "text": "Cloud Spanner",
+          "isCorrect": true,
+          "explanation": "Cloud Spanner là CSDL quan hệ duy nhất hỗ trợ strong consistency trên phạm vi toàn cầu và mở rộng theo chiều ngang (horizontal scaling)."
+        },
+        {
+          "id": "C",
+          "text": "Cloud Bigtable",
+          "isCorrect": false,
+          "explanation": "Bigtable là NoSQL, không hỗ trợ giao dịch quan hệ (relational transactions)."
+        },
+        {
+          "id": "D",
+          "text": "Firestore",
+          "isCorrect": false,
+          "explanation": "Firestore là NoSQL document database, không phù hợp cho 'relational database' yêu cầu."
+        }
+      ],
+      "hint": "Từ khóa: 'relational', 'global transactions', và 'horizontal scalability'."
+    },
+    {
+      "id": "Q5",
+      "domain": "Section 1: Designing data processing systems",
+      "text": "Your team is migrating an on-premises Hadoop cluster to Google Cloud. The workloads are mostly batch processing running once a week. You want to minimize operational overhead and cost. What is the best migration strategy?",
+      "type": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Migrate to a long-running Cloud Dataproc cluster.",
+          "isCorrect": false,
+          "explanation": "Long-running cluster sẽ tốn tiền khi không chạy job (overhead chi phí)."
+        },
+        {
+          "id": "B",
+          "text": "Use Compute Engine instances to manually install Hadoop.",
+          "isCorrect": false,
+          "explanation": "Cách này tăng tối đa operational overhead, đi ngược lại yêu cầu."
+        },
+        {
+          "id": "C",
+          "text": "Migrate to ephemeral Cloud Dataproc clusters.",
+          "isCorrect": true,
+          "explanation": "Ephemeral clusters (cluster tạm thời) chỉ bật lên khi chạy job và tắt đi khi xong, tối ưu cả chi phí và vận hành."
+        },
+        {
+          "id": "D",
+          "text": "Rewrite all workloads in Cloud Dataflow.",
+          "isCorrect": false,
+          "explanation": "Rewrite code mất rất nhiều thời gian và công sức, không phải là 'best migration strategy' nếu chỉ muốn chuyển đổi nhanh."
+        }
+      ],
+      "hint": "Với Hadoop jobs chạy theo mẻ định kỳ, việc giữ cluster chạy 24/7 là cực kỳ lãng phí."
+    }
+  ]
+}
+]
