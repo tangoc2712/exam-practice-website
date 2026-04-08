@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ScreenSelection } from './components/screens/ScreenSelection';
-import type { ExamSelectionItem } from './components/screens/ScreenSelection';
+import type { ExamCourseGroup, ExamSelectionItem } from './components/screens/ScreenSelection';
 import { ScreenExam } from './components/screens/ScreenExam';
 import { ScreenResults } from './components/screens/ScreenResults';
 import type { Exam, ExamIndexEntry } from './types';
@@ -9,6 +9,24 @@ import examsIndex from './data/exams-index.json';
 type AppState = 'selection' | 'exam' | 'results';
 
 const builtInExamModules = import.meta.glob('./data/exams/*.json');
+
+const extractExamNumber = (title: string): number | null => {
+  const match = title.match(/(?:Practice\s+)?Exam #(\d+)/i);
+  return match ? Number(match[1]) : null;
+};
+
+const toExamLabel = (title: string): string => {
+  const examNumber = extractExamNumber(title);
+  return examNumber ? `Exam #${examNumber}` : title;
+};
+
+const toCourseName = (title: string): string => {
+  const match = title.match(/\(([^)]+)\)\s*$/);
+  return match ? match[1].trim() : 'Other Courses';
+};
+
+const toCourseId = (courseName: string): string =>
+  `course-${courseName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
 
 const normalizeWhitespace = (value: string): string => value.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -63,20 +81,52 @@ function App() {
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<string, string[]>>({});
 
-  const examCards: ExamSelectionItem[] = [
-    ...(examsIndex as ExamIndexEntry[]).map((entry) => ({
+  const builtInGroupsById = new Map<string, ExamCourseGroup>();
+
+  (examsIndex as ExamIndexEntry[]).forEach((entry) => {
+    const courseName = toCourseName(entry.title);
+    const courseId = toCourseId(courseName);
+    const group = builtInGroupsById.get(courseId) || {
+      id: courseId,
+      title: courseName,
+      exams: [] as ExamSelectionItem[]
+    };
+
+    group.exams.push({
       id: entry.id,
-      title: entry.title,
+      title: toExamLabel(entry.title),
       description: entry.description,
       questionCount: entry.questionCount
-    })),
-    ...customExams.map((exam) => ({
-      id: exam.id,
-      title: exam.title,
-      description: exam.description,
-      questionCount: exam.questions.length
-    }))
-  ];
+    });
+
+    builtInGroupsById.set(courseId, group);
+  });
+
+  const builtInGroups = Array.from(builtInGroupsById.values()).map((group) => ({
+    ...group,
+    exams: [...group.exams].sort((a, b) => {
+      const aNum = extractExamNumber(a.title) ?? Number.MAX_SAFE_INTEGER;
+      const bNum = extractExamNumber(b.title) ?? Number.MAX_SAFE_INTEGER;
+      return aNum - bNum;
+    })
+  }));
+
+  const customGroup: ExamCourseGroup | null = customExams.length
+    ? {
+        id: 'course-custom',
+        title: 'Custom Exams',
+        exams: customExams.map((exam, index) => ({
+          id: exam.id,
+          title: exam.title || `Custom Exam #${index + 1}`,
+          description: exam.description,
+          questionCount: exam.questions.length
+        }))
+      }
+    : null;
+
+  const examGroups: ExamCourseGroup[] = customGroup
+    ? [...builtInGroups, customGroup]
+    : builtInGroups;
 
   const handleAddExam = (newExam: Exam) => {
     const normalizedExam = normalizeExam(newExam);
@@ -146,7 +196,7 @@ function App() {
       <div className="relative z-10 p-6 md:p-12 lg:p-16 pt-16 md:pt-24 min-h-screen flex flex-col">
         {currentScreen === 'selection' && (
           <ScreenSelection 
-            exams={examCards} 
+            examGroups={examGroups}
             onSelectExam={handleSelectExam} 
             onAddExam={handleAddExam} 
           />

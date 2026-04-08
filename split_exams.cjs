@@ -20,6 +20,13 @@ const TRACK_CONFIG = {
     titleLabel: 'Machine Learning Engineer',
     domain: 'Machine Learning Engineer Practice',
     filenamePrefix: 'gcp-ml-practice-'
+  },
+  db: {
+    pattern: /^db_course_exam_.*\.json$/,
+    idPrefix: 'gcp-db-practice-',
+    titleLabel: 'Cloud Database Engineer',
+    domain: 'Cloud Database Engineer Practice',
+    filenamePrefix: 'gcp-db-practice-'
   }
 };
 

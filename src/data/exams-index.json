@@ -82,5 +82,47 @@
     "description": "Google Cloud Certified Professional Machine Learning Engineer - 274 questions",
     "questionCount": 274,
     "file": "./exams/gcp-ml-practice-7.json"
+  },
+  {
+    "id": "gcp-db-practice-1",
+    "title": "Practice Exam #1 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 10 questions",
+    "questionCount": 10,
+    "file": "./exams/gcp-db-practice-1.json"
+  },
+  {
+    "id": "gcp-db-practice-2",
+    "title": "Practice Exam #2 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-db-practice-2.json"
+  },
+  {
+    "id": "gcp-db-practice-3",
+    "title": "Practice Exam #3 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-db-practice-3.json"
+  },
+  {
+    "id": "gcp-db-practice-4",
+    "title": "Practice Exam #4 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-db-practice-4.json"
+  },
+  {
+    "id": "gcp-db-practice-5",
+    "title": "Practice Exam #5 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-db-practice-5.json"
+  },
+  {
+    "id": "gcp-db-practice-6",
+    "title": "Practice Exam #6 (Cloud Database Engineer)",
+    "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-db-practice-6.json"
   }
 ]
