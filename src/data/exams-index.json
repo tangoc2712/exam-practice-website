@@ -1,0 +1,86 @@
+[
+  {
+    "id": "gcp-de-practice-1",
+    "title": "Practice Exam #1 (Data Engineer)",
+    "description": "Google Cloud Certified Professional Data Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-de-practice-1.json"
+  },
+  {
+    "id": "gcp-de-practice-2",
+    "title": "Practice Exam #2 (Data Engineer)",
+    "description": "Google Cloud Certified Professional Data Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-de-practice-2.json"
+  },
+  {
+    "id": "gcp-de-practice-3",
+    "title": "Practice Exam #3 (Data Engineer)",
+    "description": "Google Cloud Certified Professional Data Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-de-practice-3.json"
+  },
+  {
+    "id": "gcp-de-practice-4",
+    "title": "Practice Exam #4 (Data Engineer)",
+    "description": "Google Cloud Certified Professional Data Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-de-practice-4.json"
+  },
+  {
+    "id": "gcp-de-practice-5",
+    "title": "Practice Exam #5 (Data Engineer)",
+    "description": "Google Cloud Certified Professional Data Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-de-practice-5.json"
+  },
+  {
+    "id": "gcp-ml-practice-1",
+    "title": "Practice Exam #1 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-1.json"
+  },
+  {
+    "id": "gcp-ml-practice-2",
+    "title": "Practice Exam #2 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-2.json"
+  },
+  {
+    "id": "gcp-ml-practice-3",
+    "title": "Practice Exam #3 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-3.json"
+  },
+  {
+    "id": "gcp-ml-practice-4",
+    "title": "Practice Exam #4 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-4.json"
+  },
+  {
+    "id": "gcp-ml-practice-5",
+    "title": "Practice Exam #5 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-5.json"
+  },
+  {
+    "id": "gcp-ml-practice-6",
+    "title": "Practice Exam #6 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 50 questions",
+    "questionCount": 50,
+    "file": "./exams/gcp-ml-practice-6.json"
+  },
+  {
+    "id": "gcp-ml-practice-7",
+    "title": "Practice Exam #7 (Machine Learning Engineer)",
+    "description": "Google Cloud Certified Professional Machine Learning Engineer - 274 questions",
+    "questionCount": 274,
+    "file": "./exams/gcp-ml-practice-7.json"
+  }
+]

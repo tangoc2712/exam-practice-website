@@ -6,6 +6,7 @@ export interface Option {
 }
 
 export interface Question {
+  explanation?: string;
   id: string;
   domain: string;
   text: string;
@@ -19,4 +20,12 @@ export interface Exam {
   title: string;
   description?: string;
   questions: Question[];
+}
+
+export interface ExamIndexEntry {
+  id: string;
+  title: string;
+  description?: string;
+  questionCount: number;
+  file: string;
 }

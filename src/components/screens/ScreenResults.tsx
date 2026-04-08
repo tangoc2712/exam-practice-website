@@ -146,18 +146,17 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
                              <span className="font-medium text-sm leading-relaxed">{option.text}</span>
                              {indicator}
                           </div>
-                          {(isCorrect || isSelected) && option.explanation && (
-                            <div className={classNames(
-                              "mt-3 pt-3 border-t text-xs leading-relaxed border-opacity-30",
-                              isCorrect ? "border-neon-cyan text-cyan-200" : "border-neon-pink text-pink-200"
-                            )}>
-                              {option.explanation}
-                            </div>
-                          )}
+
                         </div>
                       )
                     })}
                   </div>
+                  {question.explanation && (
+                    <div className="mt-4 p-4 rounded-sm border border-neon-cyan/30 bg-neon-cyan/5 text-cyan-100 text-sm leading-relaxed shadow-inner">
+                      <h4 className="font-bold text-neon-cyan mb-2 tracking-wide uppercase text-xs">Explanation</h4>
+                      <p>{question.explanation}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </GlassCard>

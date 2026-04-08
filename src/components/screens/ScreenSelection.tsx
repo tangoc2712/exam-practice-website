@@ -5,9 +5,16 @@ import { BookOpen, PlusCircle } from 'lucide-react';
 import type { Exam } from '../../types';
 import { AddExamModal } from './AddExamModal';
 
+export interface ExamSelectionItem {
+  id: string;
+  title: string;
+  description?: string;
+  questionCount: number;
+}
+
 interface ScreenSelectionProps {
-  exams: Exam[];
-  onSelectExam: (exam: Exam) => void;
+  exams: ExamSelectionItem[];
+  onSelectExam: (examId: string) => void;
   onAddExam: (exam: Exam) => void;
 }
 
@@ -21,7 +28,7 @@ export const ScreenSelection: React.FC<ScreenSelectionProps> = ({ exams, onSelec
           <GlassCard 
             key={exam.id} 
             interactive 
-            onClick={() => onSelectExam(exam)}
+            onClick={() => onSelectExam(exam.id)}
             className="flex flex-col h-full animate-slide-up"
             style={{ animationFillMode: 'both' }}
           >
@@ -38,7 +45,7 @@ export const ScreenSelection: React.FC<ScreenSelectionProps> = ({ exams, onSelec
             <div className="mt-auto">
               <div className="flex items-center justify-between border-t border-[#333344] pt-4 mt-4">
                 <span className="text-sm font-bold text-neon-pink tracking-widest uppercase">
-                  {exam.questions.length} Questions
+                  {exam.questionCount} Questions
                 </span>
                 <Button variant="ghost" size="sm" className="pointer-events-none">
                   Start Exam →
