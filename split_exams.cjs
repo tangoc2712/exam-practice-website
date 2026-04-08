@@ -27,6 +27,13 @@ const TRACK_CONFIG = {
     titleLabel: 'Cloud Database Engineer',
     domain: 'Cloud Database Engineer Practice',
     filenamePrefix: 'gcp-db-practice-'
+  },
+  pca: {
+    pattern: /^pca_course_exam_.*\.json$/,
+    idPrefix: 'gcp-pca-practice-',
+    titleLabel: 'Cloud Architect',
+    domain: 'Cloud Architect Practice',
+    filenamePrefix: 'gcp-pca-practice-'
   }
 };
 

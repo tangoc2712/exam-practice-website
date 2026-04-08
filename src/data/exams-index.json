@@ -124,5 +124,61 @@
     "description": "Google Cloud Certified Professional Cloud Database Engineer - 50 questions",
     "questionCount": 50,
     "file": "./exams/gcp-db-practice-6.json"
+  },
+  {
+    "id": "gcp-pca-practice-1",
+    "title": "Practice Exam #1 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-1.json"
+  },
+  {
+    "id": "gcp-pca-practice-2",
+    "title": "Practice Exam #2 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-2.json"
+  },
+  {
+    "id": "gcp-pca-practice-3",
+    "title": "Practice Exam #3 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-3.json"
+  },
+  {
+    "id": "gcp-pca-practice-4",
+    "title": "Practice Exam #4 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-4.json"
+  },
+  {
+    "id": "gcp-pca-practice-5",
+    "title": "Practice Exam #5 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-5.json"
+  },
+  {
+    "id": "gcp-pca-practice-6",
+    "title": "Practice Exam #6 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-6.json"
+  },
+  {
+    "id": "gcp-pca-practice-7",
+    "title": "Practice Exam #7 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-7.json"
+  },
+  {
+    "id": "gcp-pca-practice-8",
+    "title": "Practice Exam #8 (Cloud Architect)",
+    "description": "Google Cloud Certified Professional Cloud Architect - 60 questions",
+    "questionCount": 60,
+    "file": "./exams/gcp-pca-practice-8.json"
   }
 ]
