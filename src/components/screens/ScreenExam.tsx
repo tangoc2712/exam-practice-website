@@ -246,33 +246,39 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
       </div>
 
       {/* Main Question Card */}
-      <GlassCard className="mb-6 md:mb-8 p-4 sm:p-5 md:p-10 relative">
-        <div className="mb-4 flex items-center justify-end gap-2 md:absolute md:top-6 md:right-6 md:mb-0">
+      <GlassCard className="mb-6 md:mb-8 p-4 sm:p-5 md:p-10">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-6 md:mb-8 text-white text-justify">
+          {question.text}
+        </h2>
+
+        <div className="mb-6 md:mb-8 flex items-center justify-end gap-2 border-y border-[#333344] py-3">
           <button 
             onClick={() => setShowHint(!showHint)}
             className={classNames(
-              "p-2 rounded-full transition-all duration-200",
-              showHint ? "bg-amber-100 text-amber-600" : "bg-slate-50 text-slate-400 hover:text-amber-500 hover:bg-slate-100"
+              "inline-flex items-center gap-2 px-3 py-2 rounded-sm transition-all duration-200 border",
+              showHint
+                ? "bg-amber-100 text-amber-700 border-amber-200"
+                : "bg-slate-50 text-slate-500 border-slate-200 hover:text-amber-500 hover:border-amber-200"
             )}
             title="Toggle Hint"
           >
-            <Lightbulb size={20} />
+            <Lightbulb size={17} />
+            <span className="text-xs font-bold uppercase tracking-wider">Hint</span>
           </button>
           <button 
             onClick={toggleMarked}
             className={classNames(
-              "p-2 rounded-full transition-all duration-200",
-              markedQuestions.has(question.id) ? "bg-red-100 text-red-600" : "bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+              "inline-flex items-center gap-2 px-3 py-2 rounded-sm transition-all duration-200 border",
+              markedQuestions.has(question.id)
+                ? "bg-red-100 text-red-700 border-red-200"
+                : "bg-slate-50 text-slate-500 border-slate-200 hover:text-red-500 hover:border-red-200"
             )}
             title="Mark for Review"
           >
-            <Flag size={20} />
+            <Flag size={17} />
+            <span className="text-xs font-bold uppercase tracking-wider">Flag</span>
           </button>
         </div>
-
-        <h2 className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-6 md:mb-8 md:pr-20 text-white text-justify sm:text-left">
-          {question.text}
-        </h2>
 
         {showHint && question.hint && (
           <div className="mb-6 md:mb-8 p-3.5 md:p-4 rounded-sm bg-neon-cyan/10 border border-neon-cyan text-cyan-100 text-xs sm:text-sm animate-fade-in flex items-start gap-3 shadow-[0_0_15px_rgba(0,255,255,0.2)]">
