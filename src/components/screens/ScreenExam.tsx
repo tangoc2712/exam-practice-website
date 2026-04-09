@@ -83,7 +83,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   // Confirm Submit Dialog
   if (showConfirmSubmit) {
     return (
-      <div className="animate-fade-in w-full max-w-lg mx-auto p-4">
+      <div className="animate-fade-in w-full max-w-lg mx-auto px-0 py-4 sm:px-2">
         <GlassPanel className="text-center p-8">
           <div className="text-neon-cyan mb-6 flex justify-center drop-shadow-[0_0_15px_rgba(0,255,255,0.8)]">
             <CheckCircle2 size={48} />
@@ -116,16 +116,17 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   // Preview Page
   if (showPreview) {
     return (
-      <div className="animate-fade-in w-full max-w-4xl mx-auto p-4 py-8">
+      <div className="animate-fade-in w-full max-w-4xl mx-auto px-0 py-4 md:px-4 md:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-neon-cyan/30">
+        <div className="mb-6 border-b border-neon-cyan/30 pb-3 md:mb-8 md:pb-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-xl font-display font-bold text-white tracking-widest">{exam.title}</h1>
-            <span className="text-sm text-neon-pink font-medium uppercase tracking-wider">
+            <h1 className="text-lg sm:text-xl font-display font-bold text-white tracking-widest">{exam.title}</h1>
+            <span className="text-xs sm:text-sm text-neon-pink font-medium uppercase tracking-wider">
               Exam Preview
             </span>
           </div>
-          <div className="flex gap-3 text-xs font-bold uppercase tracking-wider">
+          <div className="flex flex-wrap gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
             <span className="px-3 py-1 bg-neon-cyan/10 border border-neon-cyan text-neon-cyan rounded-sm">
               {answeredCount}/{exam.questions.length} Answered
             </span>
@@ -135,11 +136,13 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
               </span>
             )}
           </div>
+          </div>
         </div>
 
         {/* Summary Table */}
         <GlassCard className="mb-8 p-0 md:p-0 overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[620px]">
             <thead>
               <tr className="border-b border-[#333344] bg-[#161625]/50">
                 <th className="text-left px-6 py-4 text-xs font-display uppercase tracking-wider text-neon-cyan">#</th>
@@ -190,6 +193,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
               })}
             </tbody>
           </table>
+          </div>
         </GlassCard>
 
         {/* Unanswered warning */}
@@ -201,10 +205,11 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
         )}
 
         {/* Footer Controls */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between sm:items-center">
           <Button
             variant="ghost"
             onClick={() => setShowPreview(false)}
+            className="w-full sm:w-auto"
           >
             <ArrowLeft className="mr-2 w-4 h-4" />
             Back to Questions
@@ -213,7 +218,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
             variant="success"
             size="lg"
             onClick={() => setShowConfirmSubmit(true)}
-            className="min-w-[160px]"
+            className="w-full sm:w-auto sm:min-w-[160px]"
           >
             Submit Exam
           </Button>
@@ -224,23 +229,25 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
 
   // Normal Question View
   return (
-    <div className="animate-fade-in w-full max-w-4xl mx-auto p-4 py-8">
+    <div className="animate-fade-in w-full max-w-4xl mx-auto px-0 py-4 md:px-4 md:py-8">
       {/* Header Info */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-neon-cyan/30">
+      <div className="mb-6 border-b border-neon-cyan/30 pb-3 md:mb-8 md:pb-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-xl font-display font-bold text-white tracking-widest">{exam.title}</h1>
-          <span className="text-sm text-neon-pink font-medium uppercase tracking-wider">
+          <h1 className="text-lg sm:text-xl font-display font-bold text-white tracking-widest">{exam.title}</h1>
+          <span className="text-xs sm:text-sm text-neon-pink font-medium uppercase tracking-wider leading-relaxed block">
             Question {currentQuestionIndex + 1} of {exam.questions.length} • Domain: {question.domain}
           </span>
         </div>
-        <div className="text-xs font-bold px-3 py-1 bg-neon-cyan/10 border border-neon-cyan text-neon-cyan rounded-sm uppercase tracking-wider drop-shadow-md">
+        <div className="self-start text-[11px] sm:text-xs font-bold px-2.5 py-1 sm:px-3 bg-neon-cyan/10 border border-neon-cyan text-neon-cyan rounded-sm uppercase tracking-wider drop-shadow-md">
           {question.type === 'single' ? 'Single Choice' : 'Multiple Choice'}
+        </div>
         </div>
       </div>
 
       {/* Main Question Card */}
-      <GlassCard className="mb-8 p-6 md:p-10 relative">
-        <div className="absolute top-6 right-6 flex gap-2">
+      <GlassCard className="mb-6 md:mb-8 p-4 sm:p-5 md:p-10 relative">
+        <div className="mb-4 flex items-center justify-end gap-2 md:absolute md:top-6 md:right-6 md:mb-0">
           <button 
             onClick={() => setShowHint(!showHint)}
             className={classNames(
@@ -263,18 +270,18 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
           </button>
         </div>
 
-        <h2 className="text-xl md:text-2xl font-medium leading-relaxed mb-8 pr-20 text-white">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-6 md:mb-8 md:pr-20 text-white">
           {question.text}
         </h2>
 
         {showHint && question.hint && (
-          <div className="mb-8 p-4 rounded-sm bg-neon-cyan/10 border border-neon-cyan text-cyan-100 text-sm animate-fade-in flex items-start gap-3 shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+          <div className="mb-6 md:mb-8 p-3.5 md:p-4 rounded-sm bg-neon-cyan/10 border border-neon-cyan text-cyan-100 text-xs sm:text-sm animate-fade-in flex items-start gap-3 shadow-[0_0_15px_rgba(0,255,255,0.2)]">
              <Lightbulb size={18} className="mt-0.5 text-neon-cyan" />
              <p>{question.hint}</p>
           </div>
         )}
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 md:gap-4">
           {question.options.map((option) => {
             const isSelected = currentAnswers.includes(option.id);
             return (
@@ -282,7 +289,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
                 key={option.id}
                 onClick={() => toggleOption(option.id)}
                 className={classNames(
-                  "p-4 rounded-sm border transition-all duration-300 cursor-pointer flex items-center gap-4 group",
+                  "p-3.5 md:p-4 rounded-sm border transition-all duration-300 cursor-pointer flex items-center gap-3 md:gap-4 group",
                   isSelected 
                     ? "bg-neon-cyan/10 border-neon-cyan text-white shadow-[var(--shadow-neon-cyan)]" 
                     : "bg-[#161625] border-[#333344] text-slate-300 hover:border-neon-pink/70 hover:shadow-[0_0_15px_rgba(255,0,255,0.3)] hover:-translate-y-0.5"
@@ -295,7 +302,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
                 )}>
                   {isSelected && <div className={classNames("bg-neon-cyan shadow-[0_0_5px_rgba(0,255,255,1)]", question.type === 'single' ? "w-2.5 h-2.5 rounded-full" : "w-3 h-3 rounded-sm")} />}
                 </div>
-                <span className="text-lg leading-snug">{option.text}</span>
+                <span className="text-base sm:text-lg leading-snug">{option.text}</span>
               </div>
             );
           })}
@@ -303,25 +310,23 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
       </GlassCard>
 
       {/* Footer Controls */}
-      <div className="flex justify-between items-center">
-        <div>
-          {!isFirstQuestion && (
-            <Button 
-              variant="ghost"
-              size="lg"
-              onClick={handlePrevious}
-              className="min-w-[160px]"
-            >
-              <ChevronLeft className="mr-2 w-5 h-5" />
-              Previous Question
-            </Button>
-          )}
-        </div>
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+        {!isFirstQuestion && (
+          <Button 
+            variant="ghost"
+            size="lg"
+            onClick={handlePrevious}
+            className="w-full sm:w-auto sm:min-w-[160px]"
+          >
+            <ChevronLeft className="mr-2 w-5 h-5" />
+            Previous Question
+          </Button>
+        )}
         <Button 
           variant={isLastQuestion ? "success" : "primary"}
           size="lg"
           onClick={handleNext}
-          className="min-w-[160px]"
+          className={classNames("w-full sm:w-auto sm:min-w-[160px]", isFirstQuestion && "sm:ml-auto")}
         >
           {isLastQuestion ? (
             <>

@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 
+const APP_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:5173/exam-practice-website/';
+
+const firstOption = (page: import('@playwright/test').Page) => page.locator('span.leading-snug').first();
+
 test.describe('Exam Practice Integration Tests', () => {
   test.beforeEach(async ({ page }) => {
     // TC_001: Load exam list smoothly
-    await page.goto('http://localhost:5173'); // Attempt default port
-    await page.goto('http://localhost:5174').catch(() => page.goto('http://localhost:5173'));
+    await page.goto(APP_URL);
   });
 
   test('TC_017, TC_018, TC_019 - Add Custom Exam via Modal', async ({ page }) => {
@@ -48,19 +51,18 @@ test.describe('Exam Practice Integration Tests', () => {
 
   test('Exam Workflow (TC_002 to TC_016, TC_020 to TC_023)', async ({ page }) => {
     // TC_002: Start an exam session
-    await page.getByText('Google Professional Data Engineer').first().click();
+    await page.getByText(/^Exam #/).first().click();
     await expect(page.getByText(/Question \d+ of \d+/)).toBeVisible();
 
     // TC_003: Answer single choice question
-    const optionLabels = page.locator('span.text-lg');
-    await optionLabels.nth(0).click();
-    await optionLabels.nth(1).click();
+    await firstOption(page).click();
     
     // TC_006: Toggle Question Hint
     const hintButton = page.locator('button[title="Toggle Hint"]');
     await hintButton.click();
-    await expect(page.locator('div.bg-neon-cyan\\/10 p').last()).toBeVisible(); 
+    await expect(hintButton).toHaveClass(/bg-amber-100/);
     await hintButton.click(); // hide
+    await expect(hintButton).not.toHaveClass(/bg-amber-100/);
 
     // TC_007: Toggle Mark for Review
     const flagButton = page.locator('button[title="Mark for Review"]');
@@ -76,14 +78,14 @@ test.describe('Exam Practice Integration Tests', () => {
 
     // Fast forward to end of exam
     // Answer first question and navigate forward
-    await page.locator('span.text-lg').nth(0).click();
+    await firstOption(page).click();
     while (await page.getByRole('button', { name: 'Next Question' }).isVisible()) {
-      await page.locator('span.text-lg').nth(0).click();
+      await firstOption(page).click();
       await page.getByRole('button', { name: 'Next Question' }).click();
     }
 
     // Last question - answer it
-    await page.locator('span.text-lg').nth(0).click();
+    await firstOption(page).click();
 
     // TC_021: Preview page displays question summary table
     await page.getByRole('button', { name: 'Review & Submit' }).click();

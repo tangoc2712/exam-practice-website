@@ -193,7 +193,7 @@ function App() {
              transformOrigin: 'bottom'
            }} 
       />
-      <div className="relative z-10 p-6 md:p-12 lg:p-16 pt-16 md:pt-24 min-h-screen flex flex-col">
+      <div className="relative z-10 min-h-screen flex flex-col px-3 pt-6 pb-8 sm:px-4 sm:pt-8 sm:pb-10 md:p-12 md:pt-24 lg:p-16">
         {currentScreen === 'selection' && (
           <ScreenSelection 
             examGroups={examGroups}

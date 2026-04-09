@@ -50,11 +50,11 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
   };
 
   return (
-    <div className="animate-fade-in w-full max-w-4xl mx-auto p-4 py-12">
+    <div className="animate-fade-in w-full max-w-4xl mx-auto px-0 py-6 md:px-4 md:py-12">
       {/* Score Header */}
       <GlassCard className="mb-8 text-center border-neon-purple shadow-[0_0_30px_rgba(123,97,255,0.2)]">
-        <h1 className="text-3xl font-display font-bold mb-2 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">Exam Completed</h1>
-        <p className="text-neon-cyan tracking-widest uppercase mb-6">{exam.title}</p>
+        <h1 className="text-2xl md:text-3xl font-display font-bold mb-2 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">Exam Completed</h1>
+        <p className="text-neon-cyan text-sm md:text-base tracking-widest uppercase mb-6">{exam.title}</p>
         
         <div className="inline-block relative shadow-[0_0_40px_rgba(0,255,255,0.1)] rounded-full">
           <svg className="w-32 h-32 transform -rotate-90 filter drop-shadow-[0_0_5px_currentColor]">
@@ -78,7 +78,7 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
 
       {/* Review Section */}
       <div className="space-y-4 mb-12">
-        <h2 className="text-xl font-display font-bold mb-6 px-2 text-white uppercase tracking-widest border-l-4 border-neon-pink pl-4 drop-shadow-md">Detailed Review</h2>
+        <h2 className="text-lg md:text-xl font-display font-bold mb-5 md:mb-6 px-2 text-white uppercase tracking-widest border-l-4 border-neon-pink pl-3 md:pl-4 drop-shadow-md">Detailed Review</h2>
         
         {exam.questions.map((question, index) => {
           const selectedOptions = userAnswers[question.id] || [];
@@ -94,7 +94,7 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
               {/* Question Header */}
               <div 
                 className={classNames(
-                  "p-6 flex items-start gap-4 cursor-pointer hover:bg-[#252540] transition-colors",
+                  "p-4 md:p-6 flex items-start gap-3 md:gap-4 cursor-pointer hover:bg-[#252540] transition-colors",
                   isCorrectlyAnswered ? "bg-[#161625]" : "bg-neon-pink/10"
                 )}
                 onClick={() => !isCorrectlyAnswered && toggleExpand(question.id)}
@@ -108,7 +108,7 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
                 </div>
                 <div className="flex-grow">
                   <div className="text-xs text-slate-400 font-bold tracking-widest uppercase mb-1 drop-shadow-sm">Question {index + 1}</div>
-                  <h3 className="text-lg font-medium leading-relaxed text-slate-200">{question.text}</h3>
+                  <h3 className="text-base md:text-lg font-medium leading-relaxed text-slate-200">{question.text}</h3>
                 </div>
                 {!isCorrectlyAnswered && (
                   <div className="text-neon-pink">
@@ -119,7 +119,7 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
 
               {/* Expansion Details (Only for incorrect answers) */}
               {!isCorrectlyAnswered && isExpanded && (
-                <div className="p-6 pt-0 border-t border-[#333344] animate-slide-up bg-[#0F0F23]">
+                <div className="p-4 md:p-6 pt-0 border-t border-[#333344] animate-slide-up bg-[#0F0F23]">
                   <div className="mt-4 space-y-3">
                     {question.options.map(option => {
                       const isSelected = selectedOptions.includes(option.id);
@@ -165,11 +165,11 @@ export const ScreenResults: React.FC<ScreenResultsProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-4 justify-center">
-        <Button variant="ghost" size="lg" onClick={onBackToSelection}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 sm:justify-center">
+        <Button variant="ghost" size="lg" onClick={onBackToSelection} className="w-full sm:w-auto">
           Choose Another Exam
         </Button>
-        <Button variant="primary" size="lg" onClick={onRetake}>
+        <Button variant="primary" size="lg" onClick={onRetake} className="w-full sm:w-auto">
           <RotateCcw className="w-5 h-5 mr-2" />
           Retake Exam
         </Button>
