@@ -270,7 +270,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
           </button>
         </div>
 
-        <h2 className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-6 md:mb-8 md:pr-20 text-white">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed mb-6 md:mb-8 md:pr-20 text-white text-justify sm:text-left">
           {question.text}
         </h2>
 
