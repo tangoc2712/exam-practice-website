@@ -316,7 +316,12 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
       </GlassCard>
 
       {/* Footer Controls */}
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+      <div
+        className={classNames(
+          "flex flex-col-reverse gap-3 sm:flex-row sm:items-center",
+          isFirstQuestion ? "sm:justify-end" : "sm:justify-between"
+        )}
+      >
         {!isFirstQuestion && (
           <Button 
             variant="ghost"
@@ -332,7 +337,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
           variant={isLastQuestion ? "success" : "primary"}
           size="lg"
           onClick={handleNext}
-          className={classNames("w-full sm:w-auto sm:min-w-[160px]", isFirstQuestion && "sm:ml-auto")}
+          className="w-full sm:w-auto sm:min-w-[160px]"
         >
           {isLastQuestion ? (
             <>
