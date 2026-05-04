@@ -14,6 +14,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string[]>>({});
   const [markedQuestions, setMarkedQuestions] = useState<Set<string>>(new Set());
+  const [confirmedQuestions, setConfirmedQuestions] = useState<Set<string>>(new Set());
   const [showHint, setShowHint] = useState(false);
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -25,14 +26,27 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   const currentAnswers = userAnswers[question.id] || [];
   const correctOptionIds = question.options.filter(option => option.isCorrect).map(option => option.id);
   const hasAnswered = currentAnswers.length > 0;
+  const isConfirmed = confirmedQuestions.has(question.id);
   const isCorrectlyAnswered =
     hasAnswered &&
     currentAnswers.length === correctOptionIds.length &&
     currentAnswers.every(id => correctOptionIds.includes(id));
 
+  const clearConfirmForQuestion = () => {
+    setConfirmedQuestions(prev => {
+      if (!prev.has(question.id)) {
+        return prev;
+      }
+      const next = new Set(prev);
+      next.delete(question.id);
+      return next;
+    });
+  };
+
   const toggleOption = (optionId: string) => {
     if (question.type === 'single') {
       setUserAnswers(prev => ({ ...prev, [question.id]: [optionId] }));
+      clearConfirmForQuestion();
     } else {
       setUserAnswers(prev => {
         const current = prev[question.id] || [];
@@ -42,6 +56,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
           return { ...prev, [question.id]: [...current, optionId] };
         }
       });
+      clearConfirmForQuestion();
     }
   };
 
@@ -71,6 +86,17 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
       setCurrentQuestionIndex(prev => prev - 1);
       setShowHint(false);
     }
+  };
+
+  const handleConfirmAnswer = () => {
+    if (!hasAnswered) {
+      return;
+    }
+    setConfirmedQuestions(prev => {
+      const next = new Set(prev);
+      next.add(question.id);
+      return next;
+    });
   };
 
   const handleConfirmSubmit = () => {
@@ -320,7 +346,7 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
           })}
         </div>
 
-        {hasAnswered && (
+        {hasAnswered && isConfirmed && (
           <div
             className={classNames(
               "mt-6 md:mt-8 p-4 md:p-5 rounded-sm border animate-fade-in",
@@ -399,28 +425,34 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
       </GlassCard>
 
       {/* Footer Controls */}
-      <div
-        className={classNames(
-          "flex flex-col-reverse gap-3 sm:flex-row sm:items-center",
-          isFirstQuestion ? "sm:justify-end" : "sm:justify-between"
-        )}
-      >
-        {!isFirstQuestion && (
-          <Button 
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:items-center">
+        {!isFirstQuestion ? (
+          <Button
             variant="ghost"
             size="lg"
             onClick={handlePrevious}
-            className="w-full sm:w-auto sm:min-w-[160px]"
+            className="w-full sm:w-auto sm:min-w-[160px] sm:justify-self-start"
           >
             <ChevronLeft className="mr-2 w-5 h-5" />
             Previous Question
           </Button>
+        ) : (
+          <div className="hidden sm:block" />
         )}
-        <Button 
+        <Button
+          variant="secondary"
+          size="lg"
+          onClick={handleConfirmAnswer}
+          disabled={!hasAnswered || isConfirmed}
+          className="w-full sm:w-auto sm:min-w-[160px] sm:justify-self-center"
+        >
+          {isConfirmed ? 'Confirmed' : 'Confirm Answer'}
+        </Button>
+        <Button
           variant={isLastQuestion ? "success" : "primary"}
           size="lg"
           onClick={handleNext}
-          className="w-full sm:w-auto sm:min-w-[160px]"
+          className="w-full sm:w-auto sm:min-w-[160px] sm:justify-self-end"
         >
           {isLastQuestion ? (
             <>
