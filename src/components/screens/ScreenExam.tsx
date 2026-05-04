@@ -23,6 +23,12 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
   const isFirstQuestion = currentQuestionIndex === 0;
 
   const currentAnswers = userAnswers[question.id] || [];
+  const correctOptionIds = question.options.filter(option => option.isCorrect).map(option => option.id);
+  const hasAnswered = currentAnswers.length > 0;
+  const isCorrectlyAnswered =
+    hasAnswered &&
+    currentAnswers.length === correctOptionIds.length &&
+    currentAnswers.every(id => correctOptionIds.includes(id));
 
   const toggleOption = (optionId: string) => {
     if (question.type === 'single') {
@@ -313,6 +319,83 @@ export const ScreenExam: React.FC<ScreenExamProps> = ({ exam, onSubmit }) => {
             );
           })}
         </div>
+
+        {hasAnswered && (
+          <div
+            className={classNames(
+              "mt-6 md:mt-8 p-4 md:p-5 rounded-sm border animate-fade-in",
+              isCorrectlyAnswered
+                ? "border-neon-cyan/40 bg-neon-cyan/5"
+                : "border-neon-pink/40 bg-neon-pink/5"
+            )}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              {isCorrectlyAnswered ? (
+                <CheckCircle2 className="text-neon-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.7)]" size={20} />
+              ) : (
+                <AlertTriangle className="text-neon-pink drop-shadow-[0_0_8px_rgba(255,0,255,0.6)]" size={20} />
+              )}
+              <div>
+                <h3 className="text-sm font-display font-bold uppercase tracking-widest text-white">Answer & Explanation</h3>
+                <p className={classNames("text-xs tracking-wider uppercase", isCorrectlyAnswered ? "text-neon-cyan" : "text-neon-pink")}>
+                  {isCorrectlyAnswered ? "Correct" : "Not Correct"}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {question.options.map(option => {
+                const isSelected = currentAnswers.includes(option.id);
+                const isCorrect = option.isCorrect;
+
+                let optionStyle = "border-[#333344] text-slate-400 bg-transparent";
+                let indicator = null;
+
+                if (isCorrect) {
+                  optionStyle = "bg-neon-cyan/10 border-neon-cyan/50 text-cyan-100 shadow-[0_0_10px_rgba(0,255,255,0.15)]";
+                  indicator = (
+                    <span className="text-[10px] font-bold text-neon-cyan uppercase tracking-widest ml-auto border border-neon-cyan px-2 py-0.5 rounded-sm">
+                      Correct
+                    </span>
+                  );
+                } else if (isSelected) {
+                  optionStyle = "bg-neon-pink/10 border-neon-pink/50 text-pink-100 shadow-[0_0_10px_rgba(255,0,255,0.15)]";
+                  indicator = (
+                    <span className="text-[10px] font-bold text-neon-pink uppercase tracking-widest ml-auto border border-neon-pink px-2 py-0.5 rounded-sm">
+                      Your Answer
+                    </span>
+                  );
+                }
+
+                return (
+                  <div key={option.id} className={classNames("p-3.5 rounded-sm border", optionStyle)}>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={classNames(
+                          "w-4 h-4 rounded-sm border flex-shrink-0 shadow-inner",
+                          isCorrect
+                            ? "border-neon-cyan bg-neon-cyan"
+                            : isSelected
+                              ? "border-neon-pink bg-neon-pink"
+                              : "border-[#444455]"
+                        )}
+                      />
+                      <span className="text-sm leading-relaxed">{option.text}</span>
+                      {indicator}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {question.explanation && (
+              <div className="mt-4 p-4 rounded-sm border border-neon-cyan/30 bg-neon-cyan/5 text-cyan-100 text-sm leading-relaxed shadow-inner">
+                <h4 className="font-bold text-neon-cyan mb-2 tracking-wide uppercase text-xs">Explanation</h4>
+                <p>{question.explanation}</p>
+              </div>
+            )}
+          </div>
+        )}
       </GlassCard>
 
       {/* Footer Controls */}
